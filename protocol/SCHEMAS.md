@@ -24,7 +24,6 @@ parameters:
   max_md_chars: 25000
   max_new_evidence_per_round: 10
   accepted_evidence_types: [".pdf", ".png", ".jpg", ".txt", ".md", ".csv", ".json"]
-  publish_private_notes: false
 
 models:
   judge_1: { provider: "...", model: "...", version: "..." }
@@ -45,8 +44,9 @@ law_snapshot:
 Optional keys:
 ```yaml
 confidentiality:
-  publish_repo_after_final: true
-  redaction_policy: "none|minimal|strict"
+  publish_verdict: true              # decision/ folder → public (anonymized)
+  ministry_audit_access: true        # Ministry always has access to all tiers
+  redaction_policy: "none|minimal|strict"  # for verdict anonymization
 
 human_reviewer:
   enabled: true
@@ -158,17 +158,21 @@ Minutes must remain **neutral** and must not take sides on the merits.
 
 ## G) Clerk Questions (`clerk/RN.questions.md`)
 
+The Clerk compiles questions from all judges. **Original wording must be preserved exactly** — the Clerk must not rewrite, merge, or deduplicate questions. A judge may have a deliberate strategy in how they phrase a question; altering it crosses from procedural logistics into influencing the investigation. If multiple judges ask similar questions, all appear. Questions are **not attributed** to specific judges (to avoid leaking deliberation dynamics).
+
 Required headings:
 1. **Questions to claimant**
 2. **Questions to defendant**
 3. **Questions to investigator** — if applicable
 4. **Submission rules** — deadline, max size, how to reference evidence IDs
 
-Each question has an ID: `Q-C-01` (to claimant), `Q-D-01` (to defendant), `Q-I-01` (to investigator).
+Each question has an ID: `Q-C-01` (to claimant), `Q-D-01` (to defendant), `Q-I-01` (to investigator). The Clerk may organize questions by topic for readability.
 
 ---
 
-## H) Judge Public Output (`judges/RN/JN.public.md`)
+## H) Judge Deliberation Output (`judges/RN/JN.deliberation.md`)
+
+This is a **deliberation** document — shared among judges and Clerk only, never with parties. Write as you would speak to colleagues behind closed doors: be candid, express doubts, flag uncertainties. The formal authoritative tone belongs only in the final verdict (`decision/final.md`).
 
 Required headings:
 1. **Findings of fact**
@@ -176,13 +180,14 @@ Required headings:
    - Contested
 2. **Issues to decide**
 3. **Applicable law** — citations ONLY from law pack / law sources
-4. **Reasoning**
+4. **Reasoning** — be honest about confidence levels per issue. Flag where you are uncertain and why. Invite disagreement on weaker points. Example: "I lean toward X (high confidence), but Y is less clear to me because..."
 5. **Proposed order / remedy**
-6. **Questions for parties** — if any, specify target and give each an ID
+6. **Questions for parties** — if any, specify target and give each an ID. These will be extracted by the Clerk and are the only channel through which judges communicate with parties.
 7. **Vote and confidence**
    - Vote: liable / not liable (or specific order option if draft order exists)
    - Confidence: High / Medium / Low
    - If dissenting from majority: brief reason
+8. **Open points for fellow judges** — (optional, Round 2+) explicitly flag issues where you want input from colleagues, areas of doubt, or alternative interpretations you considered but rejected
 
 Judges must not introduce law from outside `law_sources/` without flagging it.
 
