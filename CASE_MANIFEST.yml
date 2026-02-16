@@ -1,19 +1,26 @@
 # =============================================================================
-# CASE MANIFEST — Fill this out when creating a new case
+# CASE MANIFEST — Case 002: Company Governance Expense Dispute
 # =============================================================================
 # This file locks the configuration of the run for full reproducibility.
 # Every case repo must have this file filled out before Round 0 begins.
 
-case_id: "CASE-0001"
+case_id: "CASE-0002"
 jurisdiction: "Free Republic of Liberland"
 scope: "civil_small_claims"
-created_utc: "2026-02-15T00:00:00Z"
+created_utc: "2026-02-16T00:00:00Z"
 
 # ---------------------------------------------------------------------------
 # Case description (brief, neutral)
 # ---------------------------------------------------------------------------
-title: "TODO — Short case title"
-summary: "TODO — One-paragraph neutral summary of the dispute"
+title: "Sava Logistics LLC v. Marek Vacek — Director Duties & Expense Dispute"
+summary: >
+  Sava Logistics LLC, a Liberland-registered company, alleges that its former
+  director Marek Vacek authorized unapproved payments totalling LLD 31,640 to
+  a related-party consultant ("Adriatic Advisory") and used company funds for
+  personal travel. Sava seeks repayment of LLD 31,640 plus LLD 9,500 in
+  associated losses and a declaration that Marek breached his duties as
+  director. Marek denies wrongdoing, asserts he had implied authority, and
+  contends the expenses were legitimate business development costs.
 
 # ---------------------------------------------------------------------------
 # Procedural parameters
