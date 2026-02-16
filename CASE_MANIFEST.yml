@@ -12,8 +12,20 @@ created_utc: "2026-02-15T00:00:00Z"
 # ---------------------------------------------------------------------------
 # Case description (brief, neutral)
 # ---------------------------------------------------------------------------
-title: "TODO — Short case title"
-summary: "TODO — One-paragraph neutral summary of the dispute"
+title: "FreeBuild s.r.o. v. DanuTech d.o.o. — Software delivery dispute"
+summary: >
+  FreeBuild s.r.o. (Applicant) contracted with DanuTech d.o.o. (Defendant) to
+  develop a blockchain-based Land Registry Module for 50,000 LLM in three
+  milestones. The first two milestones were delivered, accepted, and paid
+  (30,000 LLM). The third milestone was delivered 6 weeks late and rejected by
+  the Defendant, who cited critical deficiencies including missing features.
+  The Applicant contends the rejected features were never in scope and seeks
+  payment of the 20,000 LLM balance plus damages for IP infringement. The
+  Defendant counterclaims for 16,500 LLM in costs incurred engaging a third-party
+  developer to fix defects and complete the Module, plus delay damages. Key
+  issues include whether informal email discussions modified the contract scope,
+  whether the Applicant substantially performed, and whether the Defendant's
+  self-help was reasonable.
 
 # ---------------------------------------------------------------------------
 # Procedural parameters
@@ -41,25 +53,25 @@ parameters:
 # Use generic names — the system is model-agnostic.
 models:
   judge_1:
-    provider: "TODO"             # e.g. "Anthropic", "OpenAI", "xAI"
-    model: "TODO"                # e.g. "claude-sonnet-4-5-20250929", "gpt-4o", "grok-3"
-    version: "TODO"
-    notes: ""
+    provider: "Anthropic"
+    model: "claude-opus-4-6"
+    version: "2026-02"
+    notes: "Judge 1 — via Claude Code CLI"
   judge_2:
-    provider: "TODO"
-    model: "TODO"
-    version: "TODO"
-    notes: ""
+    provider: "Anthropic"
+    model: "claude-opus-4-6"
+    version: "2026-02"
+    notes: "Judge 2 — via Claude Code CLI"
   judge_3:
-    provider: "TODO"
-    model: "TODO"
-    version: "TODO"
-    notes: ""
+    provider: "Anthropic"
+    model: "claude-opus-4-6"
+    version: "2026-02"
+    notes: "Judge 3 — via Claude Code CLI"
   clerk:
-    provider: "TODO"
-    model: "TODO"
-    version: "TODO"
-    notes: ""
+    provider: "Anthropic"
+    model: "claude-opus-4-6"
+    version: "2026-02"
+    notes: "Clerk — via Claude Code CLI"
 
 # ---------------------------------------------------------------------------
 # Law snapshot references
