@@ -44,10 +44,29 @@ Judges may cite only:
 
 If the law is silent or ambiguous, judges must explicitly say so. They may then reference "commonly upheld principles of justice as are adhered to in civilized countries" (per Art. 39 §2c of the Judicial Process Law) but must clearly flag this as supplementary reasoning.
 
-### 1.5 Confidentiality
-- During proceedings: judge internal materials (`judges/` opinion/deliberation) are not shared with parties; judge private folders are not shared with anyone.
-- After final decision: the full repo may be published (with redactions per `CASE_MANIFEST.yml` policy).
-- Judge private notes are published only if `CASE_MANIFEST.yml` → `publish_private_notes: true`.
+### 1.5 Confidentiality — Four Tiers
+
+The court process uses four distinct confidentiality tiers. Every document belongs to exactly one tier:
+
+**Tier 1 — Private notes** (`judge_N_private/`, `clerk_private/`)
+- During proceedings: visible only to the author.
+- After proceedings: accessible to the Ministry of Justice for audit trail and process improvement. Never shared with parties.
+- Purpose: personal notebook — raw thoughts, drafts, working memory between rounds.
+
+**Tier 2 — Deliberation** (`judges/RN/JN.deliberation.md`, `clerk/RN.minutes.md`, `clerk/RN.draft_order.md`)
+- During proceedings: shared among judges and Clerk only. Never shared with parties.
+- After proceedings: accessible to the Ministry of Justice for audit trail. Never shared with parties.
+- Purpose: collegial discussion "behind the curtain." The minutes summarize what each judge found — this is deliberation content, not for parties' eyes. Judges should be candid — express doubts, confidence levels, uncertainties. The formal authoritative tone belongs only in the final verdict.
+
+**Tier 3 — Case file** (`filings/`, `submissions/`, `evidence/`, `clerk/RN.questions.md`, `clerk/RN.law_pack.md`)
+- During proceedings: accessible to parties, judges, and Clerk.
+- After proceedings: restricted to case participants and Ministry of Justice (contains private data).
+- Purpose: the factual record of the case. `clerk/RN.questions.md` is the only channel through which judges communicate with parties.
+
+**Tier 4 — Verdict** (`decision/final.md`, `decision/dissent.*.md`, `decision/decision.yml`)
+- During proceedings: does not yet exist (finalized only at convergence).
+- After proceedings: public. May be anonymized to become jurisprudence.
+- Purpose: the only fully public, formal, authoritative output of the court.
 
 ---
 
@@ -59,7 +78,7 @@ If the law is silent or ambiguous, judges must explicitly say so. They may then 
 - Computes evidence hashes and maintains `evidence_index.yml`
 - Compiles the Law Pack (relevant legal provisions retrieved from `law_sources/`)
 - Produces neutral minutes summarizing each round
-- Merges and deduplicates judge questions for parties
+- Compiles judge questions for parties (preserving original wording, without attribution to specific judges)
 - Compiles draft orders from judges' deliberation proposals
 - Tallies votes and publishes the final decision package
 
@@ -111,7 +130,7 @@ Provide filings, answer questions, submit evidence. Must respect naming conventi
 Each Judge:
 1. Reads: `filings/`, `evidence/evidence_index.yml`, `clerk/R0.docket.md`, `clerk/R1.law_pack.md`
 2. Uses `judge_N_private/` for personal analysis notes (this is the judge's notebook/memory for future rounds)
-3. Writes `judges/R1/JN.public.md` containing:
+3. Writes `judges/R1/JN.deliberation.md` containing:
    - Findings of fact (uncontested / contested)
    - Issues to decide
    - Applicable law (citations from law pack only)
@@ -121,12 +140,12 @@ Each Judge:
    - Vote: liable / not liable + confidence (High/Medium/Low)
 
 **After all judges complete Round 1, the Clerk:**
-1. Reads all `judges/R1/J*.public.md`
+1. Reads all `judges/R1/J*.deliberation.md`
 2. Produces `clerk/R1.minutes.md` — neutral summary:
    - What each judge found
    - Points of agreement and disagreement
    - Consolidated questions
-3. Produces `clerk/R1.questions.md` — merged, deduplicated, neutrally worded questions for parties
+3. Produces `clerk/R1.questions.md` — compiled questions from all judges, organized by topic. Original wording is preserved exactly; questions are not attributed to specific judges; no deduplication (similar questions from different judges all appear)
 4. If any judge proposed a deliberation, notes this in the minutes
 
 ### Between Rounds — Offline Party Response
@@ -148,13 +167,15 @@ Parties submit:
    - Structured as a draft of the final decision document
 
 **Each Judge:**
-1. Reads: own private notes, previous round minutes, other judges' public outputs, new submissions, updated law pack, draft order (if any)
+1. Reads: own private notes, previous round minutes, other judges' deliberation outputs, new submissions, updated law pack, draft order (if any)
 2. Updates private notes
-3. Writes `judges/RN/JN.public.md` containing:
+3. Writes `judges/RN/JN.deliberation.md` containing:
    - Updated findings and reasoning
    - Response to other judges' arguments (agree/disagree and why)
    - If draft order exists: accept it, propose specific edits, or propose alternative
    - Updated vote + confidence
+
+**Deliberation tone:** Judges are colleagues, not opponents. Deliberation files should be candid: state confidence levels honestly, flag where you are uncertain and why, openly invite disagreement on weaker points. Express your "feelings" and doubts — this is what happens behind the curtain. The formal judicial tone belongs only in the final verdict (`decision/final.md`).
 
 **Clerk post-work:**
 1. Produces `clerk/RN.minutes.md`
