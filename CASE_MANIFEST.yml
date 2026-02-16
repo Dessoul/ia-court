@@ -12,8 +12,16 @@ created_utc: "2026-02-15T00:00:00Z"
 # ---------------------------------------------------------------------------
 # Case description (brief, neutral)
 # ---------------------------------------------------------------------------
-title: "TODO — Short case title"
-summary: "TODO — One-paragraph neutral summary of the dispute"
+title: "Danube Works LLC v RiverGate Settlements LLC — Settlement Infrastructure Dispute"
+summary: >
+  Danube Works LLC (Claimant) contracted with RiverGate Settlements LLC (Defendant)
+  to install a solar micro-grid and water pump system on RiverGate's settlement plot
+  for LLD 135,000. Danube Works claims LLD 48,500 in unpaid final milestone payment.
+  RiverGate withheld payment alleging defective and unsafe installation, and
+  counterclaims LLD 72,300 in damages under Delict for negligence causing a flooding
+  incident, equipment damage, and repair costs. Core disputes concern whether the
+  installation met contractual standards, the cause of the flooding incident, and the
+  reasonableness of claimed damages.
 
 # ---------------------------------------------------------------------------
 # Procedural parameters

@@ -1,0 +1,102 @@
+# =============================================================================
+# EVIDENCE INDEX — Case CASE-0001
+# =============================================================================
+# Maintained by the Clerk. Hashes computed at Round 0.
+# Evidence files are append-only — never modify after committing.
+
+evidence:
+  - id: "E-001"
+    filename: "E-001.md"
+    sha256: "4818d9ef6f2bb77299408ab885ebfcc36cb7bceab9423e5712ba4c4418cbe78d"
+    submitted_by: "both"
+    added_in_round: 0
+    description: "Infrastructure Installation Contract (extract) between RiverGate (Client) and Danube Works (Contractor), dated 2025-04-12. Covers scope, price (LLD 135,000), milestones, target date, warranty, and liability."
+    original_ref: "Exhibit A"
+
+  - id: "E-002"
+    filename: "E-002.md"
+    sha256: "8b03f89e48a4f4bf52a80d9c1dec33b84b3efb4ca8ed846f6dd1f288a48c5a04"
+    submitted_by: "claimant"
+    added_in_round: 0
+    description: "Danube Works offer / RFP response, dated 2025-04-08. System sizing, components list, installation plan, and note about weatherproof shed requirement."
+    original_ref: "Exhibit B"
+
+  - id: "E-003"
+    filename: "E-003.md"
+    sha256: "3a34238455102d2c22ac6ac5859943585ce4ef8c383187f76f98bb5ab980708d"
+    submitted_by: "claimant"
+    added_in_round: 0
+    description: "Final invoice DW-2025-077, dated 2025-07-28. Amount: LLD 48,500 for substantial completion milestone."
+    original_ref: "Exhibit C"
+
+  - id: "E-004"
+    filename: "E-004.md"
+    sha256: "c0d4a93a847ad1e071216fecf8be891d73335be7561b786efac3eb5f6265f159"
+    submitted_by: "both"
+    added_in_round: 0
+    description: "Email thread (extract) between DW and RG, 2025-07-06 to 2025-08-18. Covers completion notice, defect reports, flooding incident, and remediation offer."
+    original_ref: "Exhibit D"
+
+  - id: "E-005"
+    filename: "E-005.md"
+    sha256: "aa2631a80c3c8f0422c1fc6d13585ae6a86b03f2e7bf5661203731159e0a1da0"
+    submitted_by: "defendant"
+    added_in_round: 0
+    description: "Independent inspection report by Kovač Inspection Services, dated 2025-07-20. Findings: incomplete weather sealing, insufficient strain relief, fuse rating mismatch, moisture ingress."
+    original_ref: "Exhibit E"
+
+  - id: "E-006-01"
+    filename: "E-006-01.png"
+    sha256: "d011b99c33115856eb3aad801e9997693f841e7ca0fba01f923ba2b5bc8bebbf"
+    submitted_by: "defendant"
+    added_in_round: 0
+    description: "Site photo 1 — equipment shed / installation condition."
+    original_ref: "Exhibit F (Photo 1)"
+
+  - id: "E-006-02"
+    filename: "E-006-02.png"
+    sha256: "03e75f7a98d4e26331189e4059a5691f9199f9b42b5792be2271b70e23d5ac82"
+    submitted_by: "defendant"
+    added_in_round: 0
+    description: "Site photo 2 — equipment shed / installation condition."
+    original_ref: "Exhibit F (Photo 2)"
+
+  - id: "E-006-03"
+    filename: "E-006-03.png"
+    sha256: "571a8624a648fcd8f5dec8a13bd59da3e5723ab163cc9d2b58e998bbf6a2cecb"
+    submitted_by: "defendant"
+    added_in_round: 0
+    description: "Site photo 3 — equipment shed / installation condition."
+    original_ref: "Exhibit F (Photo 3)"
+
+  - id: "E-007"
+    filename: "E-007.md"
+    sha256: "8f164c1af2938f4a3e0bc16b9f9be6a2abefe62dc7ba3cc892f0f2484fcf41c1"
+    submitted_by: "defendant"
+    added_in_round: 0
+    description: "Witness statement of Eleni Markovic (RiverGate Managing Member). Covers reliance on DW expertise, defect reports, flooding incident, emergency repairs."
+    original_ref: "Exhibit G"
+
+  - id: "E-008"
+    filename: "E-008.md"
+    sha256: "35b7447dedfbb0927258e097109301bda9965015f50014aa69c1b1520151c8e6"
+    submitted_by: "claimant"
+    added_in_round: 0
+    description: "Witness statement of Tomas Hruby (Danube Works Operations Director). Covers standard installation, late upgrade request, operator misuse allegations."
+    original_ref: "Exhibit H"
+
+  - id: "E-009"
+    filename: "E-009.md"
+    sha256: "082a10a1439f2539be9ac74bd0b03eb636adb823884a61ce4453a699843411d3"
+    submitted_by: "both"
+    added_in_round: 0
+    description: "Change Order No. 1, dated 2025-05-02. Client requested pump upgrade and additional battery. Price adjustment: +LLD 9,800."
+    original_ref: "Exhibit I"
+
+  - id: "E-010"
+    filename: "E-010.csv"
+    sha256: "f93e9922033b5e4cac358ef958eeeb4198ad8b49de8e4d33b07f8d928a2f7aab"
+    submitted_by: "defendant"
+    added_in_round: 0
+    description: "Payment ledger showing milestone payments (LLD 40,500 + LLD 54,000), final invoice (LLD 48,500), and third-party repair costs (LLD 22,300 + LLD 5,000)."
+    original_ref: "Exhibit J"
