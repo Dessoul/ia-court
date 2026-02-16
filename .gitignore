@@ -1,0 +1,11 @@
+# Law source repos — cloned by the Clerk at Round 0, not tracked in template
+law_sources/constitution/*
+!law_sources/constitution/.gitkeep
+law_sources/laws/*
+!law_sources/laws/.gitkeep
+law_sources/regulations/*
+!law_sources/regulations/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db

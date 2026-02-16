@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git ls-remote:*)",
+      "Bash(git clone:*)",
+      "Bash(for d in filings submissions evidence clerk judges/R1 judges/R2 judges/R3 judge_1_private judge_2_private judge_3_private clerk_private decision)",
+      "Bash(do touch \"$d/.gitkeep\")",
+      "Bash(done)"
+    ]
+  }
+}

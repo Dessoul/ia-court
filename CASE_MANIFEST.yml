@@ -1,0 +1,92 @@
+# =============================================================================
+# CASE MANIFEST — Fill this out when creating a new case
+# =============================================================================
+# This file locks the configuration of the run for full reproducibility.
+# Every case repo must have this file filled out before Round 0 begins.
+
+case_id: "CASE-0001"
+jurisdiction: "Free Republic of Liberland"
+scope: "civil_small_claims"
+created_utc: "2026-02-15T00:00:00Z"
+
+# ---------------------------------------------------------------------------
+# Case description (brief, neutral)
+# ---------------------------------------------------------------------------
+title: "TODO — Short case title"
+summary: "TODO — One-paragraph neutral summary of the dispute"
+
+# ---------------------------------------------------------------------------
+# Procedural parameters
+# ---------------------------------------------------------------------------
+parameters:
+  panel_size: 3
+  decision_rule: "majority_2_of_3"
+  max_rounds: 5
+  max_md_chars: 25000            # max characters per .md submission
+  max_new_evidence_per_round: 10
+  accepted_evidence_types:
+    - ".pdf"
+    - ".png"
+    - ".jpg"
+    - ".txt"
+    - ".md"
+    - ".csv"
+    - ".json"
+  publish_private_notes: false   # if true, judge private notes are published after decision
+
+# ---------------------------------------------------------------------------
+# AI Model identities
+# ---------------------------------------------------------------------------
+# Record which LLM plays each role for reproducibility and audit.
+# Use generic names — the system is model-agnostic.
+models:
+  judge_1:
+    provider: "TODO"             # e.g. "Anthropic", "OpenAI", "xAI"
+    model: "TODO"                # e.g. "claude-sonnet-4-5-20250929", "gpt-4o", "grok-3"
+    version: "TODO"
+    notes: ""
+  judge_2:
+    provider: "TODO"
+    model: "TODO"
+    version: "TODO"
+    notes: ""
+  judge_3:
+    provider: "TODO"
+    model: "TODO"
+    version: "TODO"
+    notes: ""
+  clerk:
+    provider: "TODO"
+    model: "TODO"
+    version: "TODO"
+    notes: ""
+
+# ---------------------------------------------------------------------------
+# Law snapshot references
+# ---------------------------------------------------------------------------
+# These must match what is cloned in law_sources/ and recorded in
+# law_sources/manifest.yml. For PoC we use "latest" at time of setup.
+law_snapshot:
+  constitution_repo: "https://github.com/liberland/constitution"
+  constitution_branch: "master"
+  constitution_ref: "TODO — Clerk fills at Round 0"
+  laws_repo: "https://github.com/liberland/laws"
+  laws_branch: "Laws-Current"
+  laws_ref: "TODO — Clerk fills at Round 0"
+  regulations_repo: "https://github.com/liberland/Regulations"
+  regulations_branch: "main"
+  regulations_ref: "TODO — Clerk fills at Round 0"
+
+# ---------------------------------------------------------------------------
+# Confidentiality and publication
+# ---------------------------------------------------------------------------
+confidentiality:
+  publish_repo_after_final: true
+  redaction_policy: "none"       # none | minimal | strict
+
+# ---------------------------------------------------------------------------
+# Human reviewer (optional safety backstop)
+# ---------------------------------------------------------------------------
+human_reviewer:
+  enabled: true
+  notes: "PoC — all decisions reviewed by human before any real-world effect"

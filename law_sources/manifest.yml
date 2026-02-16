@@ -1,0 +1,28 @@
+# Law Sources Manifest
+# =====================
+# The Clerk fills this in at Round 0 after cloning the repos.
+# Records the exact versions of Liberland law used for this case.
+#
+# Clerk Round 0 instructions:
+#   git clone --depth 1 https://github.com/liberland/constitution constitution/
+#   git clone --depth 1 --branch Laws-Current https://github.com/liberland/laws laws/
+#   git clone --depth 1 https://github.com/liberland/Regulations regulations/
+#   Then record the commit hashes below.
+
+constitution:
+  repo: "https://github.com/liberland/constitution"
+  branch: "master"
+  commit: "TODO — fill after cloning"
+  cloned_utc: "TODO"
+
+laws:
+  repo: "https://github.com/liberland/laws"
+  branch: "Laws-Current"
+  commit: "TODO — fill after cloning"
+  cloned_utc: "TODO"
+
+regulations:
+  repo: "https://github.com/liberland/Regulations"
+  branch: "main"
+  commit: "TODO — fill after cloning"
+  cloned_utc: "TODO"
