@@ -44,7 +44,9 @@ parameters:
     - ".md"
     - ".csv"
     - ".json"
-  publish_private_notes: false   # if true, judge private notes are published after decision
+  # Note: publish_private_notes has been removed. Private notes and
+  # deliberations are always accessible to the Ministry of Justice for
+  # audit trail and process improvement (see confidentiality section below).
 
 # ---------------------------------------------------------------------------
 # AI Model identities
@@ -90,11 +92,28 @@ law_snapshot:
   regulations_ref: "TODO — Clerk fills at Round 0"
 
 # ---------------------------------------------------------------------------
-# Confidentiality and publication
+# Confidentiality and publication (four-tier model)
 # ---------------------------------------------------------------------------
+# Tier 1 - Private notes (judge_N_private/, clerk_private/):
+#   → During proceedings: author only
+#   → After proceedings: Ministry of Justice (audit trail, process improvement)
+#   → Never shared with parties
+#
+# Tier 2 - Deliberation (judges/RN/JN.deliberation.md, clerk/RN.minutes.md, clerk/RN.draft_order.md):
+#   → During proceedings: judges + Clerk only
+#   → After proceedings: Ministry of Justice (audit trail)
+#   → Never shared with parties
+#
+# Tier 3 - Case file (filings, submissions, evidence, clerk questions/law_pack):
+#   → During proceedings: parties + judges + Clerk
+#   → After proceedings: case participants + Ministry of Justice (contains private data)
+#
+# Tier 4 - Verdict (decision/final.md, decision/dissent.*.md, decision/decision.yml):
+#   → After proceedings: public (anonymized → jurisprudence)
 confidentiality:
-  publish_repo_after_final: true
-  redaction_policy: "none"       # none | minimal | strict
+  publish_verdict: true            # decision/ folder → public (anonymized)
+  ministry_audit_access: true      # Ministry always has access to all tiers
+  redaction_policy: "none"         # none | minimal | strict (for verdict anonymization)
 
 # ---------------------------------------------------------------------------
 # Human reviewer (optional safety backstop)
