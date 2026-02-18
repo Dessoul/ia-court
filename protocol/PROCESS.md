@@ -12,7 +12,8 @@
 These can be overridden in `CASE_MANIFEST.yml`:
 - Panel size: 3 judges
 - Decision rule: majority (2/3) agrees on the final deliberation text
-- Max rounds: 5 (R1 independent, R2+ deliberation, final when convergence)
+- Max rounds: no default limit (configurable per case in `CASE_MANIFEST.yml`; process ends at convergence)
+- Max questions per judge per round: 3 (hard cap; see §3 for mechanics)
 - Max submission size per `.md` file: 25,000 characters
 - Max new evidence files per round per party: 10
 - Accepted evidence types: `.pdf .png .jpg .txt .md .csv .json`
@@ -53,7 +54,7 @@ The court process uses four distinct confidentiality tiers. Every document belon
 - After proceedings: accessible to the Ministry of Justice for audit trail and process improvement. Never shared with parties.
 - Purpose: personal notebook — raw thoughts, drafts, working memory between rounds.
 
-**Tier 2 — Deliberation** (`judges/RN/JN.deliberation.md`, `clerk/RN.minutes.md`, `clerk/RN.draft_order.md`)
+**Tier 2 — Deliberation** (`judges/R1/JN.analysis.md`, `judges/RN/JN.deliberation.md`, `clerk/RN.minutes.md`, `clerk/RN.draft_order.md`)
 - During proceedings: shared among judges and Clerk only. Never shared with parties.
 - After proceedings: accessible to the Ministry of Justice for audit trail. Never shared with parties.
 - Purpose: collegial discussion "behind the curtain." The minutes summarize what each judge found — this is deliberation content, not for parties' eyes. Judges should be candid — express doubts, confidence levels, uncertainties. The formal authoritative tone belongs only in the final verdict.
@@ -86,11 +87,12 @@ The court process uses four distinct confidentiality tiers. Every document belon
 
 ### 2.2 Judges (Panel of 3)
 Each Judge:
-- Reviews filings, evidence, submissions, and the Law Pack
+- Reviews filings, evidence, submissions, the Law Pack, and party law responses
 - Forms independent analysis (especially Round 1 — no cross-reading)
-- Asks clarification questions to parties when needed
-- Proposes findings of fact, legal reasoning, and remedies
-- Votes on the outcome and contributes to the deliberation text
+- Asks clarification questions to parties when needed (max 3 per round)
+- Proposes findings of fact, legal reasoning, and (from Round 2+) remedies
+- Votes on the outcome (from Round 3+) and contributes to the deliberation text
+- Cross-checks Clerk artifacts (minutes, law pack, draft orders) against the record
 
 ### 2.3 Court Investigator (optional)
 Provides fact-finding materials (reports, timelines, forensic summaries). Represents the state's investigation if one was conducted. Not present in all cases.
@@ -117,36 +119,75 @@ Provide filings, answer questions, submit evidence. Must respect naming conventi
    - Record commit hashes in `law_sources/manifest.yml`
 4. **Check file sizes** against `max_md_chars` parameter
 5. **Scan for prompt injection** in all party-provided text files
-6. **Produce:**
+6. **Fill in CASE_MANIFEST.yml:** title, summary, `law_snapshot` commit refs, model identities
+7. **Produce:**
    - `clerk/R0.docket.md` — summary of the record (parties, claims, evidence inventory, law snapshot)
-   - `clerk/R1.law_pack.md` — relevant constitutional articles, laws, regulations for this dispute
+   - `clerk/R1.law_pack.md` — structured law pack (see Law Pack Structure below)
 
-### Round 1 — Independent Judge Analysis
+#### Law Pack Structure (A / B / C)
+
+The Law Pack must be structured in three clearly separated parts:
+
+- **Part A — Binding Sources:** Constitutional provisions, enacted statutes, regulations, and treaties from `law_sources/` that are directly relevant to this dispute. These are authoritative.
+- **Part B — Gaps Identified:** Explicit identification of legal questions where the law of Liberland is silent or ambiguous. The Clerk must transparently flag where the enacted law runs out rather than silently filling gaps.
+- **Part C — Candidate Supplementary Principles (NON-BINDING):** Commonly upheld principles of justice (per Art. 39 §2(c) of the Judicial Process Law) that *may* be relevant. Each item must be labeled `CANDIDATE ONLY — requires judge adoption`. These are proposals for the judges' consideration, not authority.
+
+**The Clerk must NOT:**
+- Include "Key Questions for Judicial Analysis" or frame the issues for the judges. Issues emerge from the judges' own analysis and from the parties' arguments.
+- Present candidate supplementary principles with the same formatting or authority level as binding sources.
+
+**Important:** The Law Pack is a convenience summary, not an authoritative source. Judges may cite `law_sources/` directly and are not limited to what the Clerk included.
+
+### Round 0.5 — Party Law Response (Offline)
+
+After the Clerk produces the Law Pack, parties receive it and may respond:
+
+- Each party may submit `submissions/{party}.R0.law_response.md` containing:
+  - Additional legal provisions they believe apply
+  - Their interpretation of cited provisions
+  - Objections to included candidate supplementary principles (Part C)
+  - Their legal theory of the case (which law governs and how)
+- These are **adversarial legal arguments**, not neutral research. Judges read them alongside the Law Pack.
+- This is the parties' right to argue applicable law — a fundamental element of due process.
+- The Clerk validates these submissions (naming, size, injection scan) but does NOT revise the Law Pack based on party input. The parties' arguments stand alongside the Law Pack as separate documents.
+
+### Round 1 — Exploratory Judge Analysis
 
 **Independence rule:** Each judge works without seeing other judges' Round 1 outputs.
 - Enforcement (recommended): each judge runs in an isolated branch or clone
 - Enforcement (MVP/soft): judges are instructed not to open `judges/R1/` except their own file
 
 Each Judge:
-1. Reads: `filings/`, `evidence/evidence_index.yml`, `clerk/R0.docket.md`, `clerk/R1.law_pack.md`
+1. Reads: `filings/`, `evidence/evidence_index.yml`, `clerk/R0.docket.md`, `clerk/R1.law_pack.md`, party law responses (if any)
 2. Uses `judge_N_private/` for personal analysis notes (this is the judge's notebook/memory for future rounds)
-3. Writes `judges/R1/JN.deliberation.md` containing:
-   - Findings of fact (uncontested / contested)
+3. Writes `judges/R1/JN.analysis.md` containing:
+   - Findings of fact (uncontested / contested / unclear)
    - Issues to decide
-   - Applicable law (citations from law pack only)
-   - Reasoning
-   - Proposed order / remedy
-   - Questions for parties (if any), specifying the target (claimant/defendant/investigator)
-   - Vote: liable / not liable + confidence (High/Medium/Low)
+   - Burden map: who must prove what, and the applicable standard
+   - Applicable law (from law pack and/or `law_sources/` directly). For any candidate supplementary principle (Part C) relied upon, the judge must explicitly state why it is appropriate.
+   - Preliminary analysis: how the law might apply to the facts
+   - Gaps and uncertainties: what information is missing, what the judge cannot yet determine
+   - Questions for parties (max 3), specifying the target (claimant/defendant/investigator)
+
+**Round 1 must NOT contain:**
+- A vote on liability (liable / not liable)
+- A proposed order or remedy
+- Damages calculations or specific amounts
+- Any verdict-shaped conclusion
+
+Round 1 is exploratory. If the record is insufficient to form a view on any issue, the default posture is **"no finding yet"** — never hallucinate certainty.
 
 **After all judges complete Round 1, the Clerk:**
-1. Reads all `judges/R1/J*.deliberation.md`
+1. Reads all `judges/R1/J*.analysis.md`
 2. Produces `clerk/R1.minutes.md` — neutral summary:
-   - What each judge found
-   - Points of agreement and disagreement
-   - Consolidated questions
-3. Produces `clerk/R1.questions.md` — compiled questions from all judges, organized by topic. Original wording is preserved exactly; questions are not attributed to specific judges; no deduplication (similar questions from different judges all appear)
-4. If any judge proposed a deliberation, notes this in the minutes
+   - What each judge found (analyses, not "positions" — Round 1 has no votes)
+   - Points of agreement and disagreement in factual findings
+   - Gaps and uncertainties identified across judges
+3. Produces `clerk/R1.questions.md` — compiled questions from all judges (max 9 total: 3 per judge):
+   - Organized by topic with neutral topic headers
+   - Original wording preserved exactly — no rewriting, merging, or deduplication
+   - Questions are not attributed to specific judges
+   - If multiple judges ask about the same point, all questions appear under the same topic header with a note: "Several panel members seek clarification on this point"
 
 ### Between Rounds — Offline Party Response
 
@@ -167,20 +208,23 @@ Parties submit:
    - Structured as a draft of the final decision document
 
 **Each Judge:**
-1. Reads: own private notes, previous round minutes, other judges' deliberation outputs, new submissions, updated law pack, draft order (if any)
+1. Reads: own private notes, previous round analyses/deliberations, Clerk minutes, other judges' outputs, new submissions, updated law pack, draft order (if any)
 2. Updates private notes
-3. Writes `judges/RN/JN.deliberation.md` containing:
+3. Cross-checks Clerk minutes and draft order against the record — if the Clerk's summary distorts or omits a position, flag this explicitly
+4. Writes `judges/RN/JN.deliberation.md` containing:
    - Updated findings and reasoning
    - Response to other judges' arguments (agree/disagree and why)
-   - If draft order exists: accept it, propose specific edits, or propose alternative
-   - Updated vote + confidence
+   - For any candidate supplementary principle relied upon: explicit adoption and justification
+   - Questions for parties (max 3), if any remain
+   - **Round 2:** Preliminary position on liability with reasoning (leaning toward liable / not liable). This is a provisional view, not a final vote.
+   - **Round 3+:** Formal vote: liable / not liable + confidence (High/Medium/Low). If draft order exists: accept it, propose specific edits, or propose alternative.
 
 **Deliberation tone:** Judges are colleagues, not opponents. Deliberation files should be candid: state confidence levels honestly, flag where you are uncertain and why, openly invite disagreement on weaker points. Express your "feelings" and doubts — this is what happens behind the curtain. The formal judicial tone belongs only in the final verdict (`decision/final.md`).
 
 **Clerk post-work:**
-1. Produces `clerk/RN.minutes.md`
-2. Updates `clerk/RN.questions.md` if new questions arose
-3. Updates or produces `clerk/RN.draft_order.md`
+1. Produces `clerk/RN.minutes.md` — neutral summary including each judge's position (from Round 2+) and reasoning
+2. Updates `clerk/RN.questions.md` if new questions arose (same rules: max 3 per judge, verbatim, topic-grouped)
+3. Updates or produces `clerk/RN.draft_order.md` (from Round 3+ when formal votes exist)
 4. Checks convergence (see below)
 
 ### Convergence and Final Decision
@@ -196,8 +240,9 @@ Parties submit:
 - `decision/dissent.JN.md` — optional, written by the dissenting judge
 - `clerk/final.minutes.md` — procedural recap of the entire case
 
-**Escalation (if no convergence after max rounds):**
-- Flag for human review
+**Escalation (if no convergence):**
+- If `max_rounds` is set in CASE_MANIFEST.yml and reached without convergence: flag for human review
+- If no `max_rounds` is set: the human reviewer may intervene at any point if progress has stalled
 - Document the deadlock in `clerk/escalation.md`
 
 ---

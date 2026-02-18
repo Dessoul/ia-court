@@ -20,7 +20,8 @@ created_utc: "YYYY-MM-DDTHH:MM:SSZ"
 parameters:
   panel_size: 3
   decision_rule: "majority_2_of_3"
-  max_rounds: 5
+  # max_rounds: ~                    # optional — no default limit
+  max_questions_per_judge_per_round: 3
   max_md_chars: 25000
   max_new_evidence_per_round: 10
   accepted_evidence_types: [".pdf", ".png", ".jpg", ".txt", ".md", ".csv", ".json"]
@@ -99,6 +100,17 @@ Required headings:
 4. **New evidence submitted** — IDs, if any
 5. **Statement of truth**
 
+### Party Law Response (`submissions/{party}.R0.law_response.md`) — optional
+
+Submitted after Round 0 when parties receive the Clerk's Law Pack. Parties argue which law applies and how.
+
+Required headings:
+1. **Additional provisions** — legal provisions the party believes apply that are not in the Law Pack
+2. **Interpretation of cited provisions** — the party's reading of provisions already in the Law Pack
+3. **Objections to candidate supplementary principles** — objections to any Part C items, with reasoning
+4. **Legal theory of the case** — the party's argument about which law governs and how it applies
+5. **Statement of truth**
+
 ### Add-on (`submissions/{party}.R{N}.addon-{NN}.md`)
 Required headings:
 1. **Purpose** — why this is being submitted
@@ -128,15 +140,21 @@ Each item:
 
 ## E) Law Pack (`clerk/RN.law_pack.md`)
 
+The Law Pack must be structured in three clearly separated parts. Candidate supplementary principles must NOT be presented with the same formatting or authority level as binding sources.
+
 Required headings:
 1. **Scope** — what issues / claims triggered this retrieval
-2. **Constitution provisions** — bulleted, with article numbers and file paths
-3. **Laws** — bulleted, with article numbers and file paths
-4. **Regulations** — bulleted, if applicable
-5. **Precedents / prior decisions** — if any exist in `law_sources/jurisprudence/`
-6. **Gaps / uncertainty** — where the law is silent or ambiguous
+2. **Part A — Binding Sources**
+   - **Constitution provisions** — bulleted, with article numbers and file paths
+   - **Laws** — bulleted, with article numbers and file paths
+   - **Regulations** — bulleted, if applicable
+   - **Precedents / prior decisions** — if any exist in `law_sources/jurisprudence/`
+3. **Part B — Gaps Identified** — explicit identification of legal questions where the law is silent or ambiguous. The Clerk must transparently flag where enacted law runs out.
+4. **Part C — Candidate Supplementary Principles (NON-BINDING)** — commonly upheld principles of justice (per Art. 39 §2(c)) that may be relevant. Each item must be labeled `CANDIDATE ONLY — requires judge adoption`. These are proposals for judges' consideration, not authority.
 
 Each cited item should include a stable identifier and a short excerpt or summary.
+
+**The Clerk must NOT** include "Key Questions for Judicial Analysis" or frame issues for the judges. Issues emerge from judges' own analysis and from parties' arguments.
 
 ---
 
@@ -158,19 +176,37 @@ Minutes must remain **neutral** and must not take sides on the merits.
 
 ## G) Clerk Questions (`clerk/RN.questions.md`)
 
-The Clerk compiles questions from all judges. **Original wording must be preserved exactly** — the Clerk must not rewrite, merge, or deduplicate questions. A judge may have a deliberate strategy in how they phrase a question; altering it crosses from procedural logistics into influencing the investigation. If multiple judges ask similar questions, all appear. Questions are **not attributed** to specific judges (to avoid leaking deliberation dynamics).
+The Clerk compiles questions from all judges (max 3 per judge per round, max 9 total). **Original wording must be preserved exactly** — the Clerk must not rewrite, merge, or deduplicate questions. A judge may have a deliberate strategy in how they phrase a question; altering it crosses from procedural logistics into influencing the investigation. If multiple judges ask about the same point, all questions appear grouped under the same topic header with a note: "Several panel members seek clarification on this point." Questions are **not attributed** to specific judges (to avoid leaking deliberation dynamics).
 
 Required headings:
-1. **Questions to claimant**
-2. **Questions to defendant**
+1. **Questions to claimant** — organized by topic with neutral headers
+2. **Questions to defendant** — organized by topic with neutral headers
 3. **Questions to investigator** — if applicable
 4. **Submission rules** — deadline, max size, how to reference evidence IDs
 
-Each question has an ID: `Q-C-01` (to claimant), `Q-D-01` (to defendant), `Q-I-01` (to investigator). The Clerk may organize questions by topic for readability.
+Each question has an ID: `Q-C-01` (to claimant), `Q-D-01` (to defendant), `Q-I-01` (to investigator).
 
 ---
 
-## H) Judge Deliberation Output (`judges/RN/JN.deliberation.md`)
+## H) Round 1 — Judge Exploratory Analysis (`judges/R1/JN.analysis.md`)
+
+This is a **deliberation-tier** document — shared among judges and Clerk only, never with parties. Round 1 is exploratory: no votes, no verdicts, no proposed remedies.
+
+Required headings:
+1. **Findings of fact**
+   - Uncontested
+   - Contested
+   - Unclear / insufficient evidence
+2. **Issues to decide**
+3. **Burden map** — who must prove what, and the applicable standard
+4. **Applicable law** — citations from law pack (Part A/B) and/or `law_sources/` directly. For any candidate supplementary principle (Part C) relied upon, explicitly state why it is appropriate.
+5. **Preliminary analysis** — how the law might apply to the facts. Be honest about confidence levels per issue. Flag uncertainties. Example: "This might support X, but I need to see party response on Y before forming a view."
+6. **Gaps and uncertainties** — what information is missing, what cannot yet be determined. If the record is insufficient, say "no finding yet."
+7. **Questions for parties** — max 3, specify target and give each an ID
+
+**Round 1 must NOT contain:** a vote on liability, a proposed order or remedy, damages calculations, or any verdict-shaped conclusion.
+
+## H.2) Round 2+ — Judge Deliberation Output (`judges/RN/JN.deliberation.md`)
 
 This is a **deliberation** document — shared among judges and Clerk only, never with parties. Write as you would speak to colleagues behind closed doors: be candid, express doubts, flag uncertainties. The formal authoritative tone belongs only in the final verdict (`decision/final.md`).
 
@@ -179,15 +215,16 @@ Required headings:
    - Uncontested
    - Contested
 2. **Issues to decide**
-3. **Applicable law** — citations ONLY from law pack / law sources
-4. **Reasoning** — be honest about confidence levels per issue. Flag where you are uncertain and why. Invite disagreement on weaker points. Example: "I lean toward X (high confidence), but Y is less clear to me because..."
-5. **Proposed order / remedy**
-6. **Questions for parties** — if any, specify target and give each an ID. These will be extracted by the Clerk and are the only channel through which judges communicate with parties.
-7. **Vote and confidence**
-   - Vote: liable / not liable (or specific order option if draft order exists)
-   - Confidence: High / Medium / Low
-   - If dissenting from majority: brief reason
-8. **Open points for fellow judges** — (optional, Round 2+) explicitly flag issues where you want input from colleagues, areas of doubt, or alternative interpretations you considered but rejected
+3. **Applicable law** — citations from law pack and/or `law_sources/` directly. For any candidate supplementary principle relied upon: explicit adoption and justification.
+4. **Reasoning** — be honest about confidence levels per issue. Flag where you are uncertain and why. Invite disagreement on weaker points. Test your reasoning from both sides.
+5. **Response to other judges** — (Round 2+) agree/disagree with colleagues' arguments and why
+6. **Questions for parties** — max 3, if any remain; specify target and give each an ID
+7. **Position / Vote**
+   - **Round 2:** Preliminary position on liability with reasoning (provisional, not a final vote)
+   - **Round 3+:** Formal vote: liable / not liable + confidence (High/Medium/Low). If dissenting from majority: brief reason.
+8. **Proposed order / remedy** — (Round 3+ only) specific amounts, actions, deadlines
+9. **Draft order response** — (if draft order exists) accept, propose specific edits, or propose alternative
+10. **Open points for fellow judges** — (optional) flag issues where you want input, areas of doubt, alternative interpretations considered but rejected
 
 Judges must not introduce law from outside `law_sources/` without flagging it.
 

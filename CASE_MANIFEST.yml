@@ -21,7 +21,9 @@ summary: "TODO — One-paragraph neutral summary of the dispute"
 parameters:
   panel_size: 3
   decision_rule: "majority_2_of_3"
-  max_rounds: 5
+  # max_rounds: ~                 # optional — no default limit; process ends at convergence
+                                   # set a value (e.g. 5) only if you need a hard cap for this case
+  max_questions_per_judge_per_round: 3  # hard cap to prevent question bloat
   max_md_chars: 25000            # max characters per .md submission
   max_new_evidence_per_round: 10
   accepted_evidence_types:
